@@ -1,3 +1,6 @@
+// add html class & remove html class
+// click button go ahead !!
+
 const span = document.querySelector("span");
 const btn = document.querySelector("button");
 
@@ -14,7 +17,7 @@ const handleClickBtn = (event) => {
   } else {
     span.classList.remove(RED_CLASS);
     span.classList.add(BLUE_CLASS);
-    span.innerText = "Blue & Small";
+    span.innerText = "Blue & Small & Italic";
   }
 };
 
