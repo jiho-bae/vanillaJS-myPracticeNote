@@ -38,7 +38,7 @@ function plus(a, b) {
 }
 console.log(plus(1, 2));
 
-// ES6
+// ES6 arrow function
 
 const minus = (a, b) => {
   return a - b;
@@ -58,3 +58,30 @@ const calculator = {
 
 console.log(calculator.product(3, 4));
 console.log(calculator.division(5, 3));
+
+// callback function, anonymous function
+
+function sayHey(answer, printYes, printNo) {
+  if (answer === "hey") {
+    printYes();
+  } else {
+    printNo();
+  }
+}
+
+const printYes = function () {
+  console.log("yes?");
+};
+
+const printNo = function () {
+  console.log("no!");
+};
+
+sayHey("hey", printYes, printNo);
+sayHey("hoi", printYes, printNo);
+
+// Immediately Invoked Function Expression (IIFE)
+
+(function sayBye() {
+  console.log("IIFE.. BYE~");
+})();
