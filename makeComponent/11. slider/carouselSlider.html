@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
+          sans-serif;
+        margin: 0;
+      }
+      .slider {
+        width: 100%;
+        position: relative;
+      }
+      .slider__item {
+        width: 100%;
+        height: 500px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        position: absolute;
+        top: 0;
+        z-index: 0;
+        opacity: 0;
+        transition: all 0.5s ease-in-out;
+        transform: scale(0.9);
+      }
+      .slider__item:nth-child(odd) {
+        background-color: tomato;
+      }
+      .slider__item:nth-child(even) {
+        background-color: gold;
+      }
+      .showing {
+        opacity: 1;
+        z-index: 1;
+        transform: none;
+      }
+      .buttons {
+        margin-top: 510px;
+        display: flex;
+        justify-content: center;
+      }
+      button:first-child {
+        margin-right: 30px;
+      }
+      button {
+        all: unset;
+        padding: 5px 10px;
+        background-color: slategray;
+        color: white;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="slider">
+      <div class="slider__item showing">
+        <h1>1</h1>
+      </div>
+      <div class="slider__item">
+        <h1>2</h1>
+      </div>
+      <div class="slider__item">
+        <h1>3</h1>
+      </div>
+      <div class="slider__item">
+        <h1>4</h1>
+      </div>
+      <div class="slider__item">
+        <h1>5</h1>
+      </div>
+    </div>
+    <div class="buttons">
+      <button id="prev">Prev</button>
+      <button id="next">Next</button>
+    </div>
+    <script>
+      const firstSlide = document.querySelector(".slider__item:first-child");
+      const lastSlide = document.querySelector(".slider__item:last-child");
+      const prevBtn = document.getElementById("prev");
+      const nextBtn = document.getElementById("next");
+      const SHOWING_CLASS = "showing";
+
+      function prevSlide() {
+        const curSlide = document.querySelector(`.${SHOWING_CLASS}`);
+        if (curSlide) {
+          curSlide.classList.remove(SHOWING_CLASS);
+          const prevSlide = curSlide.previousElementSibling;
+          if (prevSlide) {
+            prevSlide.classList.add(SHOWING_CLASS);
+          } else {
+            lastSlide.classList.add(SHOWING_CLASS);
+          }
+        } else {
+          firstSlide.classList.add(SHOWING_CLASS);
+        }
+      }
+
+      function nextSlide() {
+        const curSlide = document.querySelector(`.${SHOWING_CLASS}`);
+        if (curSlide) {
+          curSlide.classList.remove(SHOWING_CLASS);
+          const nextSlide = curSlide.nextElementSibling;
+          if (nextSlide) {
+            nextSlide.classList.add(SHOWING_CLASS);
+          } else {
+            firstSlide.classList.add(SHOWING_CLASS);
+          }
+        } else {
+          firstSlide.classList.add(SHOWING_CLASS);
+        }
+      }
+
+      prevBtn.addEventListener("click", prevSlide);
+      nextBtn.addEventListener("click", nextSlide);
+    </script>
+  </body>
+</html>
