@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style></style>
+    <title>Document</title>
+  </head>
+  <body>
+    <div>
+      <span id="number"></span>명 참가, 남은 인원
+      <span id="restNumber"></span>명
+    </div>
+    <div><span id="order">1</span>번째 참가자</div>
+    <div>제시어: <span id="word"></span></div>
+    <form>
+      <input type="text" value="" />
+      <button>입력</button>
+    </form>
+    <script>
+      const numberSpan = document.getElementById("number");
+      const restNumberSpan = document.getElementById("restNumber");
+      const input = document.querySelector("input");
+      const order = document.getElementById("order");
+      const wordSpan = document.getElementById("word");
+      const button = document.querySelector("button");
+      const wordArr = [];
+      let numberArr;
+      let i = 0;
+
+      function checkWin() {
+        if (numberArr.length === 1) {
+          alert(`${numberArr[0]}번째 참가자가 승리하였습니다.`);
+          button.removeEventListener("click", handleClickButton);
+          return;
+        }
+      }
+
+      function insertWrongAnswer(prevWord, curWord) {
+        alert(
+          `패배. 제시어는 ${prevWord} 이며, 입력한 단어는 ${curWord} 입니다.`
+        );
+        numberArr.splice(i, 1);
+        restNumberSpan.innerText = numberArr.length;
+        wordSpan.innerText = "";
+        i--;
+      }
+
+      function insertAnswer() {
+        wordArr.push(input.value);
+        wordSpan.innerText = input.value;
+      }
+
+      function handleClickButton(event) {
+        event.preventDefault();
+        if (input.value === "") return;
+        if (input.value.length === 1) {
+          alert("2글자 이상으로 입력하세요.");
+          input.value = "";
+          return;
+        }
+        if (wordSpan.innerText === "") {
+          insertAnswer();
+        } else {
+          let prevWord = wordSpan.innerText;
+          let curWord = input.value;
+          if (
+            prevWord[prevWord.length - 1] === curWord[0] &&
+            !wordArr.includes(input.value)
+          ) {
+            insertAnswer();
+          } else {
+            insertWrongAnswer(prevWord, curWord);
+            checkWin();
+          }
+        }
+        input.value = "";
+        if (i >= numberArr.length - 1) i = -1;
+        order.innerText = numberArr[++i];
+      }
+
+      function askNumber() {
+        let n = +prompt("몇 명이 참가하는가?");
+        while (isNaN(n) || n < 2) {
+          n = +prompt("2 이상의 숫자를 입력하세요.");
+        }
+        numberArr = Array.from({ length: n }, (v, i) => i + 1);
+        numberSpan.innerText = n;
+        restNumberSpan.innerText = n;
+      }
+
+      function init() {
+        askNumber();
+        button.addEventListener("click", handleClickButton);
+      }
+      init();
+    </script>
+  </body>
+</html>

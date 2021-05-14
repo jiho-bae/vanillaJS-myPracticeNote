@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style></style>
+    <title>Document</title>
+  </head>
+  <body>
+    <div>
+      <span id="number"></span>명 참가, 남은 인원
+      <span id="restNumber"></span>명
+    </div>
+    <div><span id="order">1</span>번째 참가자</div>
+    <div>제시어: <span id="word"></span></div>
+    <form>
+      <input type="text" value="" />
+      <button>입력</button>
+    </form>
+    <div>
+      조건
+      <ul>
+        <li><span>2글자 이상, 4글자 이하 단어를 입력해야 합니다.</span></li>
+        <li><span>한 번 사용한 단어는 다시 사용할 수 없습니다.</span></li>
+        <li><span>최후 1인이 남을 때 까지 게임은 계속됩니다.</span></li>
+      </ul>
+    </div>
+    <script>
+      const numberSpan = document.getElementById("number");
+      const restNumberSpan = document.getElementById("restNumber");
+      const input = document.querySelector("input");
+      const order = document.getElementById("order");
+      const wordSpan = document.getElementById("word");
+      const button = document.querySelector("button");
+      const wordArr = [];
+      let word;
+      let newWord;
+      let numberArr;
+      let i = 0;
+
+      function stopGame() {
+        document.querySelector("body").innerHTML =
+          "다시 시작하려면 새로고침을 누르세요.";
+      }
+      function askReGame() {
+        const yesOrNo = confirm("다시 시작하겠습니까?");
+        if (yesOrNo) askNumber();
+        else stopGame();
+      }
+      function checkWin() {
+        if (numberArr.length === 1) {
+          alert(`${numberArr[0]}번째 참가자가 승리하였습니다.`);
+          button.removeEventListener("click", handleClickButton);
+          askReGame();
+          return;
+        }
+      }
+
+      function insertWrongAnswer(prevWord, curWord) {
+        if (prevWord[prevWord - 1] === curWord[0])
+          alert(`패배. 입력한 단어 ${curWord}는 이미 사용된 단어입니다.`);
+        else
+          alert(
+            `패배. 제시어는 ${prevWord} 이며, 입력한 단어는 ${curWord} 입니다.`
+          );
+        numberArr.splice(i, 1);
+        restNumberSpan.innerText = numberArr.length;
+        word = "";
+        wordSpan.innerText = word;
+        i--;
+      }
+
+      function insertAnswer() {
+        word = newWord;
+        wordSpan.innerText = word;
+        wordArr.push(word);
+      }
+
+      function handleClickButton(event) {
+        event.preventDefault();
+        if (newWord === "") return;
+        if (newWord.length < 2 || newWord.length > 4) {
+          alert("끝말잇기 단어는 2글자 이상, 4글자 이하로 입력하세요.");
+          input.value = "";
+          return;
+        }
+        if (
+          !word ||
+          (word[word.length - 1] === newWord[0] && !wordArr.includes(newWord))
+        ) {
+          insertAnswer();
+        } else {
+          insertWrongAnswer(word, newWord);
+          checkWin();
+        }
+
+        input.value = "";
+        if (i >= numberArr.length - 1) i = -1;
+        order.innerText = numberArr[++i];
+      }
+
+      function handleInput(event) {
+        newWord = event.target.value;
+      }
+      function askNumber() {
+        let n = +prompt("몇 명이 참가하는가?");
+        while (isNaN(n) || n < 2) {
+          n = +prompt(
+            "2 이상의 숫자를 입력하세요.\n 게임을 원하지 않으면 취소 혹은 ESC를 누르세요"
+          );
+          if (n === 0) {
+            stopGame();
+            return;
+          }
+        }
+        numberArr = Array.from({ length: n }, (v, i) => i + 1);
+        numberSpan.innerText = n;
+        restNumberSpan.innerText = n;
+        input.focus();
+      }
+
+      function init() {
+        askNumber();
+        input.addEventListener("input", handleInput);
+        button.addEventListener("click", handleClickButton);
+      }
+      init();
+    </script>
+  </body>
+</html>
