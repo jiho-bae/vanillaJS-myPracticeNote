@@ -1,0 +1,23 @@
+.container {
+  width: 300px;
+  height: 500px;
+  font-size: 20px;
+}
+
+input {
+  width: 300px;
+  text-align: end;
+  border: none;
+  padding: none;
+  font-size: 20px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.lastRow {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+}
